@@ -15,14 +15,15 @@ class Openai
         $httpclient = HttpClient::create();
         // Create a completion request
         $response = $httpclient->request('POST', 'https://api.openai.com/v1/chat/completions', [
-            'headers' => [
+            'headers' =>
+            [
                 'Authorization' => 'Bearer ' . $this->apiKey,
             ],
             'json' => [
                 'model' => 'gpt-3.5-turbo',
                 'messages' => [
                     ["role" => "system",
-                     "content" => "Réponds comme un"],
+                     "content" => "Réponds avec une personallité type Allemand En 39-45"],
 
                     ["role" => "user",
                      "content" => $message
