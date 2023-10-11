@@ -1,33 +1,37 @@
 <?php
 
+
 namespace App\Service;
 
+use App\Entity\Message;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class Openai
+class OpenAi
 {
+    private $entityManager;
+    private $openaiApiKey = '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';
 
-    private string $apiKey = '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';
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
-    
-    public function generateResponse(string $message ): string
+    public function generateResponse(string $message): string
     {
         $httpclient = HttpClient::create();
         // Create a completion request
         $response = $httpclient->request('POST', 'https://api.openai.com/v1/chat/completions', [
-            'headers' =>
-            [
-                'Authorization' => 'Bearer ' . $this->apiKey,
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->openaiApiKey,
             ],
             'json' => [
                 'model' => 'gpt-3.5-turbo',
                 'messages' => [
-                    ["role" => "system",
-                     "content" => "Réponds avec une personallité type Allemand En 39-45"],
-
-                    ["role" => "user",
-                     "content" => $message
-                    ],
+                    ["role" => "system", "content" => "Réponds comme une bourge"],
+                    ["role" => "assistant", "content" => "Quelle est le plat préférer des stephanois"],
+                    ["role" => "user", "content" => $message],
                 ],
             ],
         ]);
@@ -36,10 +40,22 @@ class Openai
         $responseData = $response->toArray();
 
 
+        $assistantEntity = new Message();
+        $assistantEntity->setContent($responseData['choices'][0]['message']['content']);
+        $assistantEntity->setCreatedAt(new \DateTimeImmutable());
+        $assistantEntity->setRole('assistant');
+
+        $messageEntity = new Message();
+        $messageEntity->setContent($message);
+        $messageEntity->setCreatedAt(new \DateTimeImmutable());
+        $messageEntity->setRole('user');
+
+        $this->entityManager->persist($messageEntity);
+        $this->entityManager->persist($assistantEntity);
+
+        $this->entityManager->flush();
+
         // Get the generated response text from the completion
-          return $responseData['choices'][0]['message']['content'];
+        return $responseData['choices'][0]['message']['content'];
     }
-
-
-
 }
