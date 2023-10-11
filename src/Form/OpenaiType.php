@@ -15,10 +15,11 @@ class OpenaiType extends AbstractType
     {
         $builder
         ->add('userInput', TextareaType::class, [
-            'label' => 'Your question:',
+            'label' => 'Poser votre question :',
         ])
         ->add('submit', SubmitType::class, [
-            'label' => 'Ask',
+            'label' => 'confirmer',
+            'attr' => ['class' => 'btn btn-primary'],
         ]);
     }
 

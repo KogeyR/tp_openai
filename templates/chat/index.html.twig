@@ -25,17 +25,23 @@
             </ul>
         </div>
 
-        <div class="row mt-4">
-            <div class="col-md-6">
-                {{ form_start(form, {'attr': {'class': 'form'}}) }}
-                {{ form_widget(form, {'attr': {'class': 'form-control'}}) }}
-                {{ form_end(form) }}
-            </div>
+      <div class="row mt-4">
+    <div class="col-md-6">
+        {{ form_start(form, {'attr': {'class': 'form'}}) }}
+        
+        <div class="form-group">
+            {{ form_widget(form, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+
 
             <div class="col-md-6">
                 {% if responseText %}
                     <div class="response">
-                        <h2>Response:</h2>
+                        <h2>Réponse:</h2>
                         <p>{{ responseText }}</p>
                     </div>
                 {% endif %}
