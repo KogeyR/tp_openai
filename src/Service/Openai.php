@@ -11,7 +11,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class OpenAi
 {
     private $entityManager;
-    private $openaiApiKey = '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 ';
+    private $openaiApiKey = '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 ';
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -29,7 +29,7 @@ class OpenAi
             'json' => [
                 'model' => 'gpt-3.5-turbo',
                 'messages' => [
-                    ["role" => "system", "content" => "Réponds comme une bourge"],
+                    ["role" => "system", "content" => "Réponds comme connard"],
                     ["role" => "assistant", "content" => "Quelle est le plat préférer des stephanois"],
                     ["role" => "user", "content" => $message],
                 ],
