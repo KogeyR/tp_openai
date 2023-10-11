@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\Openai;
+use App\Service\OpenAi;
 use App\Form\OpenaiType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,20 +17,21 @@ class ChatController extends AbstractController
     private $httpClient;
     private $openAiService;
 
-    public function __construct(HttpClientInterface $httpClient, Openai $openAi)
+    public function __construct(HttpClientInterface $httpClient, OpenAi $openAi)
     {
         $this->httpClient = $httpClient;
         $this->openAiService = $openAi;
     }
 
     #[Route('/chat', name: 'app_chat', methods: ['GET', 'POST'])]
-    public function chat(Request $request): Response
+    public function chat(Request $request, OpenAi $openAi): Response
     {
         $form = $this->createForm(OpenaiType::class);
         $form->handleRequest($request);
-
+        
         $responseText = '';
-
+        $conversationHistory = $openAi->getConversationHistory();
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $userInput = $data['userInput'];
@@ -45,6 +46,7 @@ class ChatController extends AbstractController
         return $this->render('chat/index.html.twig', [
             'form' => $form->createView(),
             'responseText' => $responseText,
+            'conversationHistory' => $conversationHistory, 
         ]);
     }
 }

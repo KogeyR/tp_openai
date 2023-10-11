@@ -3,16 +3,43 @@
 {% block title %}Chat with GPT{% endblock %}
 
 {% block body %}
-    <h1>Chat with GPT</h1>
+    <div class="container mt-4" >
+        <h1>Chat with GPT</h1>
 
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
-
-    {% if responseText %}
-        <div class="response">
-            <h2>Response:</h2>
-            <p>{{ responseText }}</p>
+        <div class="conversation-history">
+            <h2>Conversation History:</h2>
+            <ul>
+                {% for message in conversationHistory %}
+                    <li>
+                        {% if message.role == 'user' %}
+                            <div class="user-message">
+                                User : {{ message.content }}
+                            </div>
+                        {% elseif message.role == 'assistant' %}
+                            <div class="assistant-message">
+                                Assistant : {{ message.content }}
+                            </div>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
-    {% endif %}
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                {{ form_start(form, {'attr': {'class': 'form'}}) }}
+                {{ form_widget(form, {'attr': {'class': 'form-control'}}) }}
+                {{ form_end(form) }}
+            </div>
+
+            <div class="col-md-6">
+                {% if responseText %}
+                    <div class="response">
+                        <h2>Response:</h2>
+                        <p>{{ responseText }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

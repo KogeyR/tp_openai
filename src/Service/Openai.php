@@ -11,7 +11,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class OpenAi
 {
     private $entityManager;
-    private $openaiApiKey = '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';
+    private $openaiApiKey = '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';
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -36,6 +36,7 @@ class OpenAi
             ],
         ]);
 
+
         // Decode the JSON response
         $responseData = $response->toArray();
 
@@ -58,4 +59,25 @@ class OpenAi
         // Get the generated response text from the completion
         return $responseData['choices'][0]['message']['content'];
     }
+
+    public function getConversationHistory(): array
+{
+    // Injectez le repository MessageRepository dans votre service
+    $messageRepository = $this->entityManager->getRepository(Message::class);
+
+    // Récupérez tous les messages enregistrés dans la base de données
+    $messages = $messageRepository->findAll();
+
+    // Créez un tableau pour stocker les messages
+    $history = [];
+
+    foreach ($messages as $message) {
+        $history[] = [
+            'role' => $message->getRole(),
+            'content' => $message->getContent(),
+        ];
+    }
+
+    return $history;
+}
 }

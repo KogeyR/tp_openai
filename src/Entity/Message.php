@@ -16,7 +16,7 @@ class Message
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $role = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 2000, nullable: true)]
     private ?string $content = null;
 
     #[ORM\Column(nullable: true)]
