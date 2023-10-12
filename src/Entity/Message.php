@@ -51,9 +51,13 @@ class Message
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAtAsString(): ?string
     {
-        return $this->createdAt;
+        if ($this->createdAt instanceof \DateTimeImmutable) {
+            return $this->createdAt->format('Y-m-d H:i:s'); 
+        }
+
+        return null; 
     }
 
     public function setCreatedAt(?\DateTimeImmutable $creatAt): static
@@ -62,4 +66,6 @@ class Message
 
         return $this;
     }
+
+
 }

@@ -11,7 +11,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class OpenAi
 {
     private $entityManager;
-    private $openaiApiKey = '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 ';
+    private $openaiApiKey = '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 ';
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -29,8 +29,8 @@ class OpenAi
             'json' => [
                 'model' => 'gpt-3.5-turbo',
                 'messages' => [
-                    ["role" => "system", "content" => "Réponds comme connard"],
-                    ["role" => "assistant", "content" => "Quelle est le plat préférer des stephanois"],
+                    ["role" => "system", "content" => "Réponds de façon condescendante"],
+                    ["role" => "assistant", "content" => "Quelle est la capitale de la France"],
                     ["role" => "user", "content" => $message],
                 ],
             ],
@@ -42,14 +42,14 @@ class OpenAi
 
 
         $assistantEntity = new Message();
-        $assistantEntity->setContent($responseData['choices'][0]['message']['content']);
-        $assistantEntity->setCreatedAt(new \DateTimeImmutable());
-        $assistantEntity->setRole('assistant');
-
         $messageEntity = new Message();
         $messageEntity->setContent($message);
         $messageEntity->setCreatedAt(new \DateTimeImmutable());
         $messageEntity->setRole('user');
+
+        $assistantEntity->setContent($responseData['choices'][0]['message']['content']);
+        $assistantEntity->setCreatedAt(new \DateTimeImmutable());
+        $assistantEntity->setRole('assistant');
 
         $this->entityManager->persist($messageEntity);
         $this->entityManager->persist($assistantEntity);
@@ -61,18 +61,23 @@ class OpenAi
     }
 
     public function getConversationHistory(): array
-{
-    $messageRepository = $this->entityManager->getRepository(Message::class);
-    $messages = $messageRepository->findAll();
-    $history = [];
-
-    foreach ($messages as $message) {
-        $history[] = [
-            'role' => $message->getRole(),
-            'content' => $message->getContent(),
-        ];
+    {
+        $messageRepository = $this->entityManager->getRepository(Message::class);
+        $messages = $messageRepository->findBy([], ['createdAt' => 'DESC'], 10); 
+        $history = [];
+    
+        foreach ($messages as $message) {
+            $history[] = [
+                'role' => $message->getRole(),
+                'content' => $message->getContent(),
+                'createdAt' => $message->getCreatedAtAsString(),
+            ];
+        }
+    
+      
+        $history = array_reverse($history);
+    
+        return $history;
     }
-
-    return $history;
-}
+    
 }

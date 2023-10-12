@@ -4,16 +4,20 @@
 
 {% block body %}
     <div class="container mt-4" >
-        <h1>Chat with GPT</h1>
+        <h1>Chat with a bot</h1>
 
         <div class="conversation-history">
-            <h2>Conversation History:</h2>
+            <h2>Conversation History :</h2>
             <ul>
                 {% for message in conversationHistory %}
                     <li>
                         {% if message.role == 'user' %}
                             <div class="user-message">
                                 User : {{ message.content }}
+                            </div>
+
+                            <div class="Time">
+                                Time : {{message.createdAt}}
                             </div>
                         {% elseif message.role == 'assistant' %}
                             <div class="assistant-message">
@@ -24,18 +28,19 @@
                 {% endfor %}
             </ul>
         </div>
+        
 
-      <div class="row mt-4">
-    <div class="col-md-6">
-        {{ form_start(form, {'attr': {'class': 'form'}}) }}
+          <div class="row mt-4">
+         <div class="col-md-6">
+            {{ form_start(form, {'attr': {'class': 'form'}}) }}
         
         <div class="form-group">
             {{ form_widget(form, {'attr': {'class': 'form-control'}}) }}
         </div>
 
         {{ form_end(form) }}
-    </div>
-</div>
+            </div>
+        </div>
 
 
             <div class="col-md-6">
