@@ -20,8 +20,8 @@
         {% block body %}{% endblock %}
 
     <script>
-    
-function refreshChat() {
+
+ function refreshChat() {
     fetch('{{ path('app_chat') }}', {
         method: 'GET'
     })
@@ -36,7 +36,7 @@ function refreshChat() {
         let conversationHistory = data.conversation;
         let conversationList = document.querySelector('.conversation-history ul');
         
-        while (conversationList.firstChild) {
+        else (conversationList.firstChild) {
             conversationList.removeChild(conversationList.firstChild);
         }
 
@@ -51,7 +51,7 @@ function refreshChat() {
     .catch(error => {
         console.log('Erreur lors de la mise à jour du chat: ' + error);
     });
-}
+} 
 
 </script>
 

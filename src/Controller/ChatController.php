@@ -50,12 +50,5 @@ class ChatController extends AbstractController
         ]);
     }
 
-    public function refreshChat(OpenAi $openAiService)
-    {
-        $conversationHistory = $openAiService->getConversationHistory();
-
-        return $this->render('chat/index.html.twig', [
-            'messages' => $conversationHistory,
-        ]);
-    }
+   
 }
