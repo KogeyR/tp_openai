@@ -18,7 +18,9 @@
     </head>
     <body>
         {% block body %}{% endblock %}
+
     <script>
+    
 function refreshChat() {
     fetch('{{ path('app_chat') }}', {
         method: 'GET'

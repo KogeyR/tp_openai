@@ -11,7 +11,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class OpenAi
 {
     private $entityManager;
-    private $openaiApiKey = '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 ';
+    private $openaiApiKey = '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 ';
 
     public function __construct(EntityManagerInterface $entityManager)
     {
